@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+  .log {
+    padding: 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    min-height: 20px;
+    font-family: "Courier New", Courier, monospace;
+  }
+  </style>
+  
+  <script>
+  var preventDefaultErrorHandling = false;
+  
+  window.onerror = globalErrorHandler;
+  
+  function globalErrorHandler(message, url, lineNum, colNum, error) {
+     errorLog.innerHTML += "------<br />";
+     errorLog.innerHTML += "Global error caught at : " + (new Date()) + "<br /><br />";
+     errorLog.innerHTML += "Message: " + message + "<br />";
+     errorLog.innerHTML += "URL: " + url + "<br />";
+     errorLog.innerHTML += "Line: " + lineNum + "<br />";
+     errorLog.innerHTML += "Column: " + colNum + "<br />";
+     errorLog.innerHTML += "Error: " + error + "<br /><br />";
+     errorLog.innerHTML += "Stack: " + (error && error.stack ? '<br /><pre>' + error.stack + '</pre>' : '') + "<br />";
+     errorLog.innerHTML += "Settings<br />";
+     errorLog.innerHTML += " &nbsp;Prevent default error handling: " + preventDefaultErrorHandling + "<br /><br />";
+
+     return preventDefaultErrorHandling;
+  }
+
+  function onPreventHandlingChange(target) {
+    preventDefaultErrorHandling = target.checked;
+  }
+
+  function onUncaughtButtonClick() {
+     someObject.someProperty = true;
+  }
+  </script>
+</head>
+  
+<body>
+  <h1><a href="/">window.onerror.space</a> > Test page</h1>
+  <hr />
+
+  <label><input type="checkbox" onchange="onPreventHandlingChange(this)"> Prevent Default Error Handling</label>
+  <br />
+  <br /> 
+
+  <input type="button" value="Throw an uncaught error" onclick="onUncaughtButtonClick()"/>
+  <br />
+  <br />
+  Error details:
+  <div id="errorLog" class="log"></div>
+</body>
+</html>

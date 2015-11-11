@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+  .code {
+    padding: 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    min-height: 20px;
+    font-family: "Courier New", Courier, monospace;
+  }
+  </style>
+  
+  <script>
+  var preventDefaultErrorHandling = false;
+  
+  window.onerror = globalErrorHandler;
+  
+  function globalErrorHandler(message, url, lineNum, colNum, error) {
+     errorLog.innerHTML += "------<br />";
+     errorLog.innerHTML += "Global error caught at : " + (new Date()) + "<br /><br />";
+     errorLog.innerHTML += "Message: " + message + "<br />";
+     errorLog.innerHTML += "URL: " + url + "<br />";
+     errorLog.innerHTML += "Line: " + lineNum + "<br />";
+     errorLog.innerHTML += "Column: " + colNum + "<br />";
+     errorLog.innerHTML += "Error: " + error + "<br /><br />";
+     errorLog.innerHTML += "Stack: " + (error && error.stack ? '<br /><pre>' + error.stack + '</pre>' : '') + "<br />";
+     errorLog.innerHTML += "Settings<br />";
+     errorLog.innerHTML += " &nbsp;Prevent default error handling: " + preventDefaultErrorHandling + "<br /><br />";
+
+     return preventDefaultErrorHandling;
+  }
+
+  function onPreventHandlingChange(target) {
+    preventDefaultErrorHandling = target.checked;
+  }
+
+  function onUncaughtButtonClick() {
+     someObject.someProperty = true;
+  }
+  </script>
+</head>
+  
+<body>
+  <h1>window.onerror</h1>
+  <h3>Documentation on the <code>onerror</code> property of window, and how it defers across browsers and browser versions.
+  <hr />
+
+  <h3>Current WHATWG spec [<a href="https://html.spec.whatwg.org/multipage/webappapis.html#runtime-script-errors-in-documents">link</a>]</h3>
+  <pre class="code">window.onerror = function(message, filename, lineno, colno, error) {
+  // custom handling here
+}</pre>
+ 
+  <ul>
+    <li><b>message</b>: the error message (usually the Error object's message property)</li>
+    <li><b>filename</b>: the absolute URL of the script in which the error originally occurred</li>
+    <li><b>lineno</b>: line number (1-based) where the error occurred in the script</li>
+    <li><b>colno</b>: column number (1-based) where the error occurred in the script</li>
+    <li><b>error</b>: object representing the error (e.g. the exception object in the case of an uncaught DOM exception).</li>
+  </ul>
+  
+  <p>Return true from the function to prevent default browser error handling (such as showing a message in the console, or popping a debug dialog in old versions of IE).</p>
+</body>
+</html>
